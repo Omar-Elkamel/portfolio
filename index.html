@@ -257,8 +257,12 @@ body.ready .hero .role{animation:fade .8s 1.8s forwards}
 .fz-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .fz-col img{border-radius:12px;cursor:zoom-in}
 .fz-col .w{grid-column:1/-1}
+.fz-col img{box-shadow:0 24px 50px -20px rgba(0,0,0,.5);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.fz-col img:hover{transform:scale(1.04) rotate(-1deg)}
+.fz-col .fl{animation:bob 6s ease-in-out infinite;animation-delay:var(--fd,0s)}
+@keyframes bob{50%{translate:0 -10px}}
 .orange{color:#ff9a2e}
-.fz-stats{display:flex;gap:50px;margin-top:40px}
+.fz-stats{display:flex;gap:40px;margin-top:40px;flex-wrap:wrap}
 .fz-stats b{font-family:var(--disp);font-size:clamp(40px,4.5vw,64px);color:#ff9a2e;display:block;line-height:1}
 .fz-stats span{font-size:12px;opacity:.75}
 .fz-link{display:inline-block;margin-top:30px;border-bottom:2px solid #ff9a2e;padding-bottom:4px;font-weight:600}
@@ -575,14 +579,15 @@ footer{border-top:1px solid #222;padding:26px 4vw;display:flex;justify-content:s
         <dt>Approach</dt><dd>A fresh green wordmark with two leaves, a warm cream base and orange accents, carried from the logo to every box label and post.</dd>
       </dl>
       <div class="fz-stats rv">
+        <div><b data-count="100" data-suffix="K+">0</b><span>reel views</span></div>
+        <div><b>6.2K</b><span>page followers</span></div>
         <div><b data-count="600" data-suffix="+">0</b><span>reactions, one organic reel</span></div>
-        <div><b>4.4K</b><span>page followers</span></div>
       </div>
       <a class="fz-link" href="https://www.facebook.com/3elfaraza" target="_blank" rel="noopener">See the brand live ↗</a>
     </div>
     <div class="fz-col rv" style="--d:.2s">
-      <img src="fz-logo.jpg" alt="3elFaraza logo"><img src="fz-meat.jpg" alt="3elFaraza offer post">
-      <img class="w" src="fz-cover.jpg" alt="3elFaraza page cover">
+      <img class="fl" src="fz-mahshi.jpg" alt="3elFaraza stuffed-vegetables bundle offer"><img class="fl" style="--fd:1.2s" src="fz-meatcat.jpg" alt="3elFaraza meat bundle offer">
+      <img class="w" src="fz-cover2.jpg" alt="3elFaraza Facebook cover">
     </div>
   </div>
 </section>
@@ -647,7 +652,7 @@ footer{border-top:1px solid #222;padding:26px 4vw;display:flex;justify-content:s
   <div class="wrap">
     <div class="eyebrow">Experience · <span class="ar">الخبرة</span></div>
     <h2 class="big rv">Where I've<br><span class="red">been.</span></h2>
-    <div class="tl-row rv"><div class="y">Jul 2026 – Present</div><h3>Founder &amp; Content Creator<small>3elFaraza · Damietta, Egypt</small></h3><p>Built a fresh kitchen-prep food brand and its full identity. Produce, shoot and edit daily reels; one organic reel reached 600+ reactions and 180+ comments with no paid promotion. Run Meta ads for a 4.4K-follower community.</p></div>
+    <div class="tl-row rv"><div class="y">Jul 2026 – Present</div><h3>Founder &amp; Content Creator<small>3elFaraza · Damietta, Egypt</small></h3><p>Built a fresh kitchen-prep food brand and its full identity. Produce, shoot and edit daily reels; one organic reel reached 600+ reactions and 180+ comments with no paid promotion. Grew the page to 6.2K followers and 100K+ views on its reels, and run Meta ads for the local delivery area.</p></div>
     <div class="tl-row rv"><div class="y">Mar 2024 – Jun 2026</div><h3>Senior Graphic Designer &amp; Video Editor<small>Four Agency · UAE · Remote</small></h3><p>50+ designs and 20+ reels per month for UAE clients in tech events, healthcare, hospitality and sustainability: GITEX Global, MSD, Abu Dhabi Sustainability Week, Hatta Resorts, Dubai Air Navigation Services and more.</p></div>
     <div class="tl-row rv"><div class="y">Jan 2021 – Mar 2024</div><h3>Senior Graphic Designer &amp; Video Editor<small>Elmothada Company · Egypt</small></h3><p>Brand-consistent images and videos, organic and paid scheduling, performance tracking. Logos and identities for Millionaire LLC, Duplex Technology, Shop 4 Me and two dental clinics.</p></div>
     <div class="tl-row rv"><div class="y">2015 – 2021</div><h3>Sales Representative<small>Cima Diagnostic · Egypt</small></h3><p>Six years of client-facing work that sharpened briefing, presentation and negotiation. I understand the client side of the brief.</p></div>
