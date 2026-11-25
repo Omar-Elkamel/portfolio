@@ -40,9 +40,15 @@ body.ready #loader{transform:translateY(-100%)}
 @keyframes up{to{transform:none}}
 
 /* ===== cursor ===== */
-#cur{position:fixed;left:0;top:0;width:14px;height:14px;border-radius:50%;background:var(--red);pointer-events:none;z-index:90;transform:translate(-50%,-50%);transition:width .25s,height .25s,background .25s;mix-blend-mode:difference}
-#cur.hover{width:64px;height:64px;background:#fff}
-@media (hover:none){#cur{display:none}}
+#cur,#ring{position:fixed;left:0;top:0;pointer-events:none;z-index:96;border-radius:50%;transform:translate(-50%,-50%)}
+#cur{width:8px;height:8px;background:var(--red);box-shadow:0 0 0 2px #fff;transition:opacity .2s,transform .2s}
+#ring{width:40px;height:40px;border:1.5px solid var(--red);display:grid;place-items:center;font:700 10px var(--body);letter-spacing:.14em;color:#fff;transition:width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),background .3s,border-color .3s}
+#ring span{opacity:0;transition:opacity .2s}
+#ring.hover{width:70px;height:70px;background:rgba(255,43,71,.18);border-color:rgba(255,43,71,.6)}
+#ring.view{width:86px;height:86px;background:var(--red);border-color:var(--red)}
+#ring.view span{opacity:1}
+body:has(#ring.view) #cur{opacity:0}
+@media (hover:none){#cur,#ring{display:none}}
 
 /* ===== nav ===== */
 nav{position:fixed;top:0;inset-inline:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:18px 4vw}
@@ -112,20 +118,48 @@ body.ready .hero .role{animation:fade .8s 1.8s forwards}
 
 /* ===== services ===== */
 .services{background:var(--cream);color:var(--ink)}
-.svc{display:grid;grid-template-columns:repeat(5,1fr);border-top:2px solid var(--ink);margin-top:50px}
-.svc>div{padding:28px 20px 30px 0;border-right:1px solid #d6d0c4;transition:background .4s,color .4s,padding .4s;cursor:default}
-.svc>div:last-child{border:0}
-.svc>div:hover{background:var(--ink);color:#fff;padding-left:20px}
-.svc .num{font-family:var(--disp);font-size:44px;color:var(--red)}
-.svc h3{font-family:var(--disp);font-size:20px;text-transform:uppercase;margin:16px 0 6px;line-height:1.05}
-.svc .ar{font-size:14px;font-weight:700;opacity:.7;text-align:left}
-.svc p{font-size:14px;line-height:1.55;margin-top:14px;opacity:.8}
-.svc .ai{background:var(--red);color:#fff}
-.svc .ai .num{color:#fff}
+.svc{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-top:56px;perspective:1200px}
+.card{position:relative;background:#fff;border-radius:26px;padding:26px 24px 28px;min-height:340px;display:flex;flex-direction:column;overflow:hidden;cursor:default;
+ box-shadow:0 1px 0 rgba(0,0,0,.04),0 18px 40px -22px rgba(20,20,30,.28);
+ opacity:0;transform:translateY(80px) rotateX(-25deg) scale(.92);transform-origin:50% 100%;
+ transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1),box-shadow .4s,background .45s,color .45s;transition-delay:var(--d,0s)}
+.svc.in .card{opacity:1;transform:none}
+.svc.in .card:hover{transform:translateY(-12px);transition-delay:0s;background:var(--ink);color:#fff;box-shadow:0 30px 60px -20px rgba(20,20,30,.55)}
+.card:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%);transform:translateX(-120%);pointer-events:none}
+.card:hover:after{transform:translateX(120%);transition:transform .9s ease}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start}
+.card .num{font-family:var(--disp);font-size:42px;color:var(--red);line-height:1;transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
+.card:hover .num{transform:scale(1.15) rotate(-6deg)}
+.ico{width:58px;height:58px;border-radius:18px;background:var(--cream);display:grid;place-items:center;transition:background .4s,transform .6s cubic-bezier(.3,1.6,.5,1)}
+.card:hover .ico{background:var(--red);transform:rotate(10deg) scale(1.08)}
+.ico svg{width:30px;height:30px;fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:stroke .4s}
+.card:hover .ico svg{stroke:#fff}
+.ico svg *{stroke-dasharray:120;stroke-dashoffset:120;transition:stroke-dashoffset 1.4s cubic-bezier(.6,0,.2,1);transition-delay:calc(var(--d,0s) + .5s)}
+.svc.in .ico svg *{stroke-dashoffset:0}
+.card h3{font-family:var(--disp);font-size:19px;text-transform:uppercase;margin:auto 0 6px;padding-top:34px;line-height:1.08}
+.card .ar{font-size:14px;font-weight:700;opacity:.65;text-align:left}
+.card p{font-size:14px;line-height:1.55;margin-top:12px;opacity:.78}
+.card .more{margin-top:18px;height:3px;border-radius:3px;background:var(--red);width:28px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.card:hover .more{width:100%}
+.card.ai{background:var(--red);color:#fff;isolation:isolate}
+.card.ai:before{content:"";position:absolute;inset:-60%;background:conic-gradient(from 0deg,transparent 0 70%,rgba(255,255,255,.55) 80%,transparent 90%);animation:spin 5s linear infinite;z-index:-2}
+.card.ai .inner{position:absolute;inset:2px;border-radius:24px;background:var(--red);z-index:-1}
+.svc.in .card.ai:hover{background:var(--red)}
+.card.ai .num{color:#fff}
+.card.ai .ico{background:rgba(255,255,255,.18)}
+.card.ai .ico svg{stroke:#fff}
+.card.ai .more{background:#fff}
+.card.ai .spark{position:absolute;color:#fff;font-size:14px;animation:twinkle 2.4s ease-in-out infinite;opacity:0}
+.card.ai .spark:nth-of-type(1){top:22%;right:16%}
+.card.ai .spark:nth-of-type(2){top:42%;right:34%;animation-delay:.8s;font-size:10px}
+.card.ai .spark:nth-of-type(3){top:30%;right:8%;animation-delay:1.6s;font-size:18px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.4) rotate(0)}50%{opacity:1;transform:scale(1) rotate(90deg)}}
 .tools{margin-top:40px;display:flex;flex-wrap:wrap;gap:10px}
 .tools span{border:1.5px solid var(--ink);border-radius:99px;padding:8px 16px;font-size:13px;font-weight:600}
 .tools span.aiT{background:var(--ink);color:#fff;border-color:var(--ink)}
-@media (max-width:960px){.svc{grid-template-columns:1fr 1fr}.svc>div{border-right:0;border-bottom:1px solid #d6d0c4;padding-left:0}}
+@media (max-width:1100px){.svc{grid-template-columns:repeat(2,minmax(0,1fr))}.card{min-height:300px}.card.ai{grid-column:1/-1}}
+@media (max-width:520px){.svc{grid-template-columns:1fr}.card{min-height:0}}
 
 /* ===== case header ===== */
 .case-head{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:start}
@@ -303,7 +337,7 @@ footer{border-top:1px solid #222;padding:26px 4vw;display:flex;justify-content:s
 </head>
 <body>
 <div id="loader"><span><i>O</i><i>E</i></span></div>
-<div id="cur"></div>
+<div id="cur"></div><div id="ring"><span>VIEW</span></div>
 <div id="prog"></div>
 
 <nav>
@@ -367,12 +401,12 @@ footer{border-top:1px solid #222;padding:26px 4vw;display:flex;justify-content:s
   <div class="wrap">
     <div class="eyebrow">What I do · <span class="ar">بعمل إيه</span></div>
     <h2 class="big rv">Five things,<br><span class="red">done properly.</span></h2>
-    <div class="svc">
-      <div class="rv"><div class="num">01</div><h3>Social Media Design</h3><div class="ar">تصاميم سوشيال ميديا</div><p>Posts, carousels and stories built for the scroll.</p></div>
-      <div class="rv" style="--d:.08s"><div class="num">02</div><h3>Video &amp; Motion</h3><div class="ar">فيديو وموشن جرافيك</div><p>Reels, event videos and motion graphics.</p></div>
-      <div class="rv" style="--d:.16s"><div class="num">03</div><h3>Logos &amp; Branding</h3><div class="ar">لوجوهات وهوية بصرية</div><p>Logos and visual systems that stay consistent.</p></div>
-      <div class="rv" style="--d:.24s"><div class="num">04</div><h3>Bilingual Design</h3><div class="ar">تصميم باللغتين</div><p>Arabic and English layouts that feel native in both.</p></div>
-      <div class="rv ai" style="--d:.32s"><div class="num">05</div><h3>AI-Powered Production</h3><div class="ar">إنتاج بأدوات الذكاء الاصطناعي</div><p>Generative Fill, Firefly, ChatGPT and Claude to move faster on visuals, copy and ideas.</p></div>
+    <div class="svc" id="svc">
+      <div class="card" style="--d:0.00s"><div class="top"><div class="num">01</div><div class="ico"><svg viewBox="0 0 32 32"><rect x="7" y="3" width="18" height="26" rx="4"/><path d="M12 9h8M11 14h10v8H11z"/></svg></div></div><h3>Social Media Design</h3><div class="ar">تصاميم سوشيال ميديا</div><p>Posts, carousels and stories built for the scroll.</p><div class="more"></div></div>
+      <div class="card" style="--d:0.12s"><div class="top"><div class="num">02</div><div class="ico"><svg viewBox="0 0 32 32"><rect x="3" y="7" width="20" height="18" rx="4"/><path d="M23 13l6-4v14l-6-4"/><path d="M11 12l6 4-6 4z"/></svg></div></div><h3>Video &amp; Motion</h3><div class="ar">فيديو وموشن جرافيك</div><p>Reels, event videos and motion graphics.</p><div class="more"></div></div>
+      <div class="card" style="--d:0.24s"><div class="top"><div class="num">03</div><div class="ico"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12"/><path d="M10 20c3-9 9-9 12 0M16 4v6"/></svg></div></div><h3>Logos &amp; Branding</h3><div class="ar">لوجوهات وهوية بصرية</div><p>Logos and visual systems that stay consistent.</p><div class="more"></div></div>
+      <div class="card" style="--d:0.36s"><div class="top"><div class="num">04</div><div class="ico"><svg viewBox="0 0 32 32"><path d="M4 8h12M10 5v3c0 6-3 10-6 12M7 14c2 3 5 5 8 6"/><path d="M17 27l5-12 5 12M19 23h6"/></svg></div></div><h3>Bilingual Design</h3><div class="ar">تصميم باللغتين</div><p>Arabic and English layouts that feel native in both.</p><div class="more"></div></div>
+      <div class="card ai" style="--d:0.48s"><i class="inner"></i><span class="spark">✦</span><span class="spark">✦</span><span class="spark">✦</span><div class="top"><div class="num">05</div><div class="ico"><svg viewBox="0 0 32 32"><path d="M16 3l2.8 8.2L27 14l-8.2 2.8L16 25l-2.8-8.2L5 14l8.2-2.8z"/><path d="M26 22l1 3 3 1-3 1-1 3-1-3-3-1 3-1z"/></svg></div></div><h3>AI-Powered Production</h3><div class="ar">إنتاج بأدوات الذكاء الاصطناعي</div><p>Generative Fill, Firefly, ChatGPT and Claude to move faster on visuals, copy and ideas.</p><div class="more"></div></div>
     </div>
     <div class="tools rv">
       <span>Photoshop</span><span>Illustrator</span><span>InDesign</span><span>Premiere Pro</span><span>After Effects</span>
@@ -651,7 +685,7 @@ footer{border-top:1px solid #222;padding:26px 4vw;display:flex;justify-content:s
   // reveal
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);
     e.target.querySelectorAll('[data-count]').forEach(count); if(e.target.dataset.count) count(e.target);}}),{threshold:.18});
-  document.querySelectorAll('.rv,#fan,#steps,#lgrid,.mask,[data-count]').forEach(el=>io.observe(el));
+  document.querySelectorAll('.rv,#fan,#steps,#lgrid,#svc,.mask,[data-count]').forEach(el=>io.observe(el));
   function count(el){if(el.dataset.done)return;el.dataset.done=1;const t=+el.dataset.count,suf=el.dataset.suffix||'+';
     if(reduce){el.textContent=t+suf;return}const s=performance.now();
     (function f(n){const p=Math.min((n-s)/1400,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(t*e)+(p===1?suf:'');if(p<1)requestAnimationFrame(f)})(s)}
@@ -661,9 +695,11 @@ footer{border-top:1px solid #222;padding:26px 4vw;display:flex;justify-content:s
   addEventListener('scroll',()=>{pr.style.width=(scrollY/(document.documentElement.scrollHeight-innerHeight)*100)+'%'},{passive:true});
 
   // cursor
-  const cur=document.getElementById('cur');
-  addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px'});
-  document.querySelectorAll('a,button,.rail,.pair,img').forEach(el=>{el.addEventListener('mouseenter',()=>cur.classList.add('hover'));el.addEventListener('mouseleave',()=>cur.classList.remove('hover'))});
+  const cur=document.getElementById('cur'),ring=document.getElementById('ring');let mx=-100,my=-100,rx=-100,ry=-100;
+  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+  (function loop(){rx+=(mx-rx)*.18;ry+=(my-ry)*.18;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop)})();
+  document.querySelectorAll('a,button,.card,.pair').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('hover'));el.addEventListener('mouseleave',()=>ring.classList.remove('hover'))});
+  document.querySelectorAll('.mini img,.fan img,.dgrid img,.fz-col img,.eg img,.rail figure').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('view'));el.addEventListener('mouseleave',()=>ring.classList.remove('view'))});
 
   // rail drag + bar
   const rail=document.getElementById('rail'),bar=document.getElementById('railbar');let down=false,sx,sl,moved=0;
@@ -684,6 +720,10 @@ footer{border-top:1px solid #222;padding:26px 4vw;display:flex;justify-content:s
       img.style.transform=`rotateY(${x*16}deg) rotateX(${-y*16}deg) scale(1.05)`});
     img.addEventListener('mouseleave',()=>img.style.transform='')})}
 
+  if(!reduce&&matchMedia('(hover:hover)').matches){document.querySelectorAll('.card').forEach(c=>{
+    c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+      c.style.transform=`translateY(-12px) rotateY(${x*10}deg) rotateX(${-y*10}deg)`});
+    c.addEventListener('mouseleave',()=>c.style.transform='')})}
   // bilingual tap
   document.querySelectorAll('.pair').forEach(p=>p.addEventListener('click',()=>p.classList.toggle('flip')));
 
